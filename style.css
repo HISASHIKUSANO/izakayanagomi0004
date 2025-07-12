@@ -81,6 +81,15 @@ h1, h2, h3, .section-title, .hero-title, .hero-subtitle, .category-title {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    padding: 10px;
+    position: relative;
+    z-index: 1001;
+    background: transparent;
+    border: none;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    align-items: center;
 }
 
 .hamburger span {
@@ -782,6 +791,17 @@ section {
     .hamburger {
         display: flex;
         cursor: pointer;
+        padding: 15px;
+        position: relative;
+        z-index: 1001;
+        background: transparent;
+        border: none;
+        min-width: 48px;
+        min-height: 48px;
+        justify-content: center;
+        align-items: center;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
     
     .hamburger.active span:nth-child(1) {

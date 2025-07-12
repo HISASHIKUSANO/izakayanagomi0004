@@ -1,32 +1,68 @@
 // DOM読み込み完了後に実行
 document.addEventListener('DOMContentLoaded', function() {
     
+    // デバッグ用：ページ読み込み確認
+    console.log('Page loaded, initializing scripts...');
+    console.log('User agent:', navigator.userAgent);
+    console.log('Touch support:', 'ontouchstart' in window);
+    
     // ハンバーガーメニュー機能
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     
+    console.log('Hamburger element found:', hamburger);
+    console.log('Nav menu element found:', navMenu);
+    
     if (hamburger && navMenu) {
-        // クリックイベント
-        hamburger.addEventListener('click', function() {
+        // メニュー切り替え関数
+        function toggleMenu() {
+            console.log('Menu toggle function called');
             navMenu.classList.toggle('active');
             hamburger.classList.toggle('active');
             
             // アクセシビリティ用のaria-expanded属性を更新
             const isExpanded = navMenu.classList.contains('active');
             hamburger.setAttribute('aria-expanded', isExpanded);
+            console.log('Menu is now:', isExpanded ? 'open' : 'closed');
+        }
+        
+        // クリックイベント
+        hamburger.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Hamburger click event fired');
+            toggleMenu();
         });
+        
+        // タッチスタートイベント（モバイル専用）
+        hamburger.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Hamburger touchstart event fired');
+        }, { passive: false });
+        
+        // タッチエンドイベント（モバイル専用）
+        hamburger.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Hamburger touchend event fired');
+            toggleMenu();
+        }, { passive: false });
         
         // キーボードナビゲーション（EnterとSpaceキー）
         hamburger.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-                
-                const isExpanded = navMenu.classList.contains('active');
-                hamburger.setAttribute('aria-expanded', isExpanded);
+                console.log('Hamburger keyboard event fired');
+                toggleMenu();
             }
         });
+        
+        // デバッグ用：要素の状態確認
+        console.log('Hamburger menu initialized successfully');
+        
+    } else {
+        console.error('Hamburger menu elements not found!');
     }
     
     // スムーススクロール
@@ -227,7 +263,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // モバイル向けタッチイベント処理
 if ('ontouchstart' in window) {
+    console.log('Touch events enabled');
     document.addEventListener('touchstart', function() {}, true);
+    
+    // iOS Safari用のタッチイベント強制有効化
+    document.addEventListener('touchstart', function() {}, { passive: true });
+} else {
+    console.log('Touch events not supported');
 }
 
 // エラーハンドリング
