@@ -14,24 +14,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // スムーススクロール
-    const links = document.querySelectorAll('a[href^="#"]');
-    links.forEach(link => {
+    const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+
+    smoothScrollLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // メニューが開いている場合は閉じる処理を追加
-            if (navMenu.classList.contains('active')) {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger');
+
+            // スマホメニューが開いている場合のみ、閉じる処理を実行
+            if (hamburger && navMenu && navMenu.classList.contains('active')) {
                 navMenu.classList.remove('active');
                 hamburger.classList.remove('active');
             }
 
             const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
+            // hrefが"#"だけであればトップに移動
+            if (targetId === '#') {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                return; // これ以降の処理は不要
+            }
             
+            const targetSection = document.querySelector(targetId);
+
             if (targetSection) {
-                const headerHeight = document.querySelector('.header').offsetHeight;
+                const header = document.querySelector('.header');
+                const headerHeight = header ? header.offsetHeight : 0;
                 const targetPosition = targetSection.offsetTop - headerHeight;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
