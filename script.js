@@ -6,11 +6,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
     
     if (hamburger && navMenu) {
+        // クリックイベント
         hamburger.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             hamburger.classList.toggle('active');
+            
+            // アクセシビリティ用のaria-expanded属性を更新
+            const isExpanded = navMenu.classList.contains('active');
+            hamburger.setAttribute('aria-expanded', isExpanded);
         });
         
+        // キーボードナビゲーション（EnterとSpaceキー）
+        hamburger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+                
+                const isExpanded = navMenu.classList.contains('active');
+                hamburger.setAttribute('aria-expanded', isExpanded);
+            }
+        });
     }
     
     // スムーススクロール
@@ -20,36 +36,44 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
 
-            const navMenu = document.querySelector('.nav-menu');
-            const hamburger = document.querySelector('.hamburger');
+            const navMenuElement = document.querySelector('.nav-menu');
+            const hamburgerElement = document.querySelector('.hamburger');
 
             // スマホメニューが開いている場合のみ、閉じる処理を実行
-            if (hamburger && navMenu && navMenu.classList.contains('active')) {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
+            if (hamburgerElement && navMenuElement && navMenuElement.classList.contains('active')) {
+                navMenuElement.classList.remove('active');
+                hamburgerElement.classList.remove('active');
+                hamburgerElement.setAttribute('aria-expanded', 'false');
             }
 
             const targetId = this.getAttribute('href');
+            console.log('Clicking link with target:', targetId); // デバッグ用
+            
             // hrefが"#"だけであればトップに移動
             if (targetId === '#') {
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
-                return; // これ以降の処理は不要
+                return;
             }
             
             const targetSection = document.querySelector(targetId);
+            console.log('Target section found:', targetSection); // デバッグ用
 
             if (targetSection) {
                 const header = document.querySelector('.header');
                 const headerHeight = header ? header.offsetHeight : 0;
                 const targetPosition = targetSection.offsetTop - headerHeight;
 
+                console.log('Scrolling to position:', targetPosition); // デバッグ用
+                
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+            } else {
+                console.warn('Target section not found for:', targetId); // デバッグ用
             }
         });
     });

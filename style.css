@@ -750,13 +750,50 @@ section {
         align-items: center;
         padding: 1rem 0;
         z-index: 999;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
     .nav-menu.active {
         display: flex;
     }
     
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+        margin: 0.5rem 0;
+    }
+    
+    .nav-menu a {
+        display: block;
+        padding: 1rem 2rem;
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: 5px;
+        margin: 0 1rem;
+    }
+    
+    .nav-menu a:hover,
+    .nav-menu a:focus {
+        background-color: #d8a05e;
+        color: #26160e;
+    }
+    
     .hamburger {
         display: flex;
+        cursor: pointer;
+    }
+    
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
     }
     
     .hero-title {
