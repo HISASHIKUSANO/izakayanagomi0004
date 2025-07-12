@@ -11,14 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
             hamburger.classList.toggle('active');
         });
         
-        // メニューリンクをクリックした時にメニューを閉じる
-        const navLinks = document.querySelectorAll('.nav-menu a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            });
-        });
     }
     
     // スムーススクロール
@@ -26,6 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
+
+            // メニューが開いている場合は閉じる処理を追加
+            if (navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             
