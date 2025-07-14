@@ -747,37 +747,35 @@ section {
 }
 
 /* 背景スクロール制御 - モバイルメニュー表示時の重要な改善 */
-body.no-scroll {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-}
+/* 不要なbody.no-scrollクラスを削除 */
 
-/* レスポンシブデザイン - 大幅改善したモバイル体験 */
+/* モバイル用ハンバーガーメニュー - シンプル版 */
 @media (max-width: 768px) {
-    /* 全画面オーバーレイナビゲーション - モダンなUX */
+    /* フルスクリーンオーバーレイメニュー */
     .nav-menu {
-        display: none;
-        position: fixed; /* 改善: absolute -> fixed */
-        top: 0; /* 改善: 100% -> 0 */
+        position: fixed;
+        top: 0;
         left: 0;
-        width: 100vw; /* 改善: 100% -> 100vw */
-        height: 100vh; /* 改善: 全画面表示 */
-        background-color: rgba(38, 22, 14, 0.98); /* 改善: 透明感のある背景 */
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(38, 22, 14, 0.98);
+        display: flex;
         flex-direction: column;
-        justify-content: center; /* 改善: 中央配置 */
+        justify-content: center;
         align-items: center;
-        padding: 0; /* 改善: padding削除 */
-        z-index: 9999; /* 改善: z-indexを最上位に */
-        backdrop-filter: blur(5px); /* 改善: ブラー効果追加 */
-        transition: opacity 0.3s ease, visibility 0.3s ease; /* 改善: スムーズなアニメーション */
+        z-index: 9999;
+        
+        /* 初期状態: 非表示 */
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
         opacity: 0;
         visibility: hidden;
     }
     
     .nav-menu.active {
-        display: flex;
-        opacity: 1; /* 改善: フェードイン効果 */
+        /* アクティブ状態: 表示 */
+        transform: translateX(0);
+        opacity: 1;
         visibility: visible;
     }
     
