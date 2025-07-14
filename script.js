@@ -6,19 +6,52 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('User agent:', navigator.userAgent);
     console.log('Touch support:', 'ontouchstart' in window);
     
-    // ハンバーガーメニュー機能
+    // ハンバーガーメニュー機能 - 改善版（スクロール制御＋イベント統一）
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
+    const body = document.body;
     
     console.log('Hamburger element found:', hamburger);
     console.log('Nav menu element found:', navMenu);
     
     if (hamburger && navMenu) {
-        // メニュー切り替え関数
+        // 背景スクロール位置を保存する変数
+        let scrollPosition = 0;
+        
+        // メニュー切り替え関数 - 改善版
         function toggleMenu() {
             console.log('Menu toggle function called');
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
+            const isCurrentlyOpen = navMenu.classList.contains('active');
+            
+            if (!isCurrentlyOpen) {
+                // メニューを開く
+                // 現在のスクロール位置を保存
+                scrollPosition = window.pageYOffset;
+                
+                // 背景スクロールを無効化
+                body.classList.add('no-scroll');
+                body.style.top = `-${scrollPosition}px`;
+                
+                // メニューを表示
+                navMenu.classList.add('active');
+                hamburger.classList.add('active');
+                
+                console.log('Menu opened, scroll disabled');
+            } else {
+                // メニューを閉じる
+                // 背景スクロールを有効化
+                body.classList.remove('no-scroll');
+                body.style.top = '';
+                
+                // スクロール位置を復元
+                window.scrollTo(0, scrollPosition);
+                
+                // メニューを非表示
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                
+                console.log('Menu closed, scroll enabled');
+            }
             
             // アクセシビリティ用のaria-expanded属性を更新
             const isExpanded = navMenu.classList.contains('active');
@@ -26,28 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Menu is now:', isExpanded ? 'open' : 'closed');
         }
         
-        // クリックイベント
+        // 統一されたクリックイベント - 改善版（touchイベント削除）
         hamburger.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('Hamburger click event fired');
             toggleMenu();
         });
-        
-        // タッチスタートイベント（モバイル専用）
-        hamburger.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Hamburger touchstart event fired');
-        }, { passive: false });
-        
-        // タッチエンドイベント（モバイル専用）
-        hamburger.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Hamburger touchend event fired');
-            toggleMenu();
-        }, { passive: false });
         
         // キーボードナビゲーション（EnterとSpaceキー）
         hamburger.addEventListener('keydown', function(e) {
@@ -58,14 +76,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // メニュー外クリックで閉じる機能 - 改善版
+        document.addEventListener('click', function(e) {
+            if (navMenu.classList.contains('active') && 
+                !navMenu.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                console.log('Clicked outside menu, closing');
+                toggleMenu();
+            }
+        });
+        
+        // ESCキーでメニューを閉じる機能 - 新機能
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                console.log('ESC key pressed, closing menu');
+                toggleMenu();
+            }
+        });
+        
         // デバッグ用：要素の状態確認
-        console.log('Hamburger menu initialized successfully');
+        console.log('Hamburger menu initialized successfully with improved functionality');
         
     } else {
         console.error('Hamburger menu elements not found!');
     }
     
-    // スムーススクロール
+    // スムーススクロール - 改善版（新しいメニュー閉じる処理対応）
     const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
 
     smoothScrollLinks.forEach(link => {
@@ -75,11 +111,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const navMenuElement = document.querySelector('.nav-menu');
             const hamburgerElement = document.querySelector('.hamburger');
 
-            // スマホメニューが開いている場合のみ、閉じる処理を実行
+            // スマホメニューが開いている場合、改善されたメニュー閉じる処理を実行
             if (hamburgerElement && navMenuElement && navMenuElement.classList.contains('active')) {
+                // 改善: 背景スクロール制御も含めてメニューを閉じる
+                body.classList.remove('no-scroll');
+                body.style.top = '';
+                window.scrollTo(0, scrollPosition);
+                
                 navMenuElement.classList.remove('active');
                 hamburgerElement.classList.remove('active');
                 hamburgerElement.setAttribute('aria-expanded', 'false');
+                
+                console.log('Menu closed via navigation link');
             }
 
             const targetId = this.getAttribute('href');
@@ -104,10 +147,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 console.log('Scrolling to position:', targetPosition); // デバッグ用
                 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                // 改善: メニューが閉じられた後、少し遅延してからスクロール
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
             } else {
                 console.warn('Target section not found for:', targetId); // デバッグ用
             }
