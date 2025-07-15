@@ -6,75 +6,101 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('User agent:', navigator.userAgent);
     console.log('Touch support:', 'ontouchstart' in window);
     
-    // シンプルハンバーガーメニュー - モバイル特化版
+    // 確実に動作するモバイルハンバーガーメニュー - 最終版
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
     
-    console.log('Mobile hamburger menu initializing...');
+    console.log('=== Mobile Navigation Debug ===');
     console.log('Hamburger found:', !!hamburger);
     console.log('NavMenu found:', !!navMenu);
+    console.log('NavLinks found:', navLinks.length);
     
-    if (hamburger && navMenu) {
-        // シンプルなメニュー開閉
-        function toggleMenu() {
-            const isOpen = navMenu.classList.contains('active');
-            console.log('Toggle menu - currently open:', isOpen);
-            
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-            hamburger.setAttribute('aria-expanded', !isOpen);
-            
-            console.log('Menu toggled - now open:', !isOpen);
+    // メニューを閉じる関数
+    function closeMenu() {
+        if (navMenu && hamburger) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            console.log('Menu closed');
+        }
+    }
+    
+    // スクロール処理関数
+    function scrollToTarget(targetId) {
+        console.log('Scrolling to:', targetId);
+        
+        if (targetId === '#home' || targetId === '#') {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            console.log('Scrolled to top');
+            return;
         }
         
-        // ハンバーガーボタンクリック
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+            const header = document.querySelector('.header');
+            const headerHeight = header ? header.offsetHeight : 80;
+            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            
+            console.log('Target section found:', targetSection);
+            console.log('Calculated position:', targetPosition);
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        } else {
+            console.error('Target section not found:', targetId);
+        }
+    }
+    
+    if (hamburger && navMenu) {
+        // ハンバーガーボタンのクリック処理
         hamburger.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Hamburger clicked');
-            toggleMenu();
+            
+            const isOpen = navMenu.classList.contains('active');
+            
+            if (isOpen) {
+                closeMenu();
+            } else {
+                navMenu.classList.add('active');
+                hamburger.classList.add('active');
+                hamburger.setAttribute('aria-expanded', 'true');
+                console.log('Menu opened');
+            }
         });
         
-        // メニューリンククリック処理
-        navMenu.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A') {
-                console.log('Menu link clicked:', e.target.getAttribute('href'));
+        // 各リンクに個別にイベントリスナーを設定（確実な方法）
+        navLinks.forEach((link, index) => {
+            const href = link.getAttribute('href');
+            console.log(`Setting up link ${index}: ${href}`);
+            
+            link.addEventListener('click', function(e) {
+                console.log('=== Link clicked ===');
+                console.log('Link:', this);
+                console.log('Href:', this.getAttribute('href'));
+                console.log('Event:', e);
                 
-                // メニューを即座に閉じる
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
+                // 確実にデフォルト動作を停止
+                e.preventDefault();
+                e.stopPropagation();
                 
-                // スクロール処理
-                const targetId = e.target.getAttribute('href');
+                // メニューを閉じる
+                closeMenu();
                 
-                if (targetId === '#home' || targetId === '#') {
-                    // トップへスクロール
-                    setTimeout(() => {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                    }, 50);
-                    return;
-                }
+                // スクロールを実行
+                const targetId = this.getAttribute('href');
                 
-                // 対象セクションへスクロール
-                const targetSection = document.querySelector(targetId);
-                if (targetSection) {
-                    const header = document.querySelector('.header');
-                    const headerHeight = header ? header.offsetHeight : 80;
-                    
-                    setTimeout(() => {
-                        const targetPosition = targetSection.offsetTop - headerHeight;
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                        console.log('Scrolling to:', targetPosition);
-                    }, 50);
-                }
-            }
+                // 少し遅延してスクロールを実行（メニューアニメーション待ち）
+                setTimeout(() => {
+                    scrollToTarget(targetId);
+                }, 100);
+            });
         });
         
         // メニュー外クリックで閉じる
@@ -82,16 +108,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (navMenu.classList.contains('active') && 
                 !navMenu.contains(e.target) && 
                 !hamburger.contains(e.target)) {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-                console.log('Menu closed by outside click');
+                closeMenu();
             }
         });
         
-        console.log('Mobile hamburger menu initialized successfully');
+        console.log('Mobile hamburger menu setup complete with individual link listeners');
     } else {
-        console.error('Hamburger menu elements not found!');
+        console.error('Required elements not found!');
     }
     
     // ページトップへ戻るボタン
