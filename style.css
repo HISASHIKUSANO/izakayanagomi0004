@@ -862,8 +862,15 @@ section {
     }
     
     /* ヒーローセクションのモバイル表示崩れを修正 */
+    .hero {
+        height: calc(100vh - 80px); /* 固定ヘッダー分を差し引く */
+        align-items: flex-start; /* 中央揃えから上揃えに変更 */
+        padding-top: 120px; /* 固定ヘッダー + 余白 */
+    }
+    
     .hero-content {
-        padding-top: 5rem; /* 上部に余白を追加してタイトルを押し下げる */
+        padding-top: 0; /* heroでpadding-topを設定するため不要 */
+        margin-top: 0; /* 同様に不要 */
     }
     
     /* タイポグラフィの改善 - 読みやすさとスペース効率のバランス */
