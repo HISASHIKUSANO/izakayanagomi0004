@@ -861,6 +861,11 @@ section {
         background-color: #26160e; /* 改善: アクティブ時の色変更 */
     }
     
+    /* ヒーローセクションのモバイル表示崩れを修正 */
+    .hero-content {
+        padding-top: 5rem; /* 上部に余白を追加してタイトルを押し下げる */
+    }
+    
     /* タイポグラフィの改善 - 読みやすさとスペース効率のバランス */
     .hero-title {
         font-size: 2.2rem; /* 改善: 2.5rem -> 2.2rem */
