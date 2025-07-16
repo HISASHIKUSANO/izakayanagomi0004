@@ -861,22 +861,25 @@ section {
         background-color: #26160e; /* 改善: アクティブ時の色変更 */
     }
     
-    /* ヒーローセクションの表示崩れと重なりを修正する、より堅牢なスタイル */
+    /* ヒーローセクションの表示崩れを根本的に修正する最終版スタイル */
     .hero {
-        min-height: 100vh; /* 高さを最低でも画面100%に設定 */
-        height: auto;      /* コンテンツが多ければ自動で高さを伸ばす */
+        min-height: 100vh;
+        height: auto;
         display: flex;
-        align-items: center;     /* 垂直方向中央揃え */
-        justify-content: center; /* 水平方向中央揃え */
-        padding-top: 80px;       /* 固定ヘッダー分の余白を確保 */
-        padding-bottom: 40px;    /* 下部にも適切な余白を確保 */
+        align-items: center;
+        justify-content: center;
+        /* 親要素のパディングを削除し、中央揃えに専念させる */
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
     
-    /* hero-content自体のpadding-topは不要なのでリセット */
+    /* コンテンツ自身に上下の余白を持たせて、ヘッダーとの重なりを確実に回避 */
     .hero-content {
-        padding: 1rem; /* モバイル版タイトル表示修正: 全体的なパディング調整 */
-        margin-top: 0;
-        max-width: 100%; /* モバイル版タイトル表示修正: 幅制限緩和 */
+        width: 100%; /* 幅を親に合わせる */
+        max-width: 500px; /* ただし最大幅は設定 */
+        padding-top: 100px;  /* 固定ヘッダーを避けるための十分な上部余白 */
+        padding-bottom: 40px; /* 下部の余白 */
+        margin: 0;
     }
     
     /* タイポグラフィの改善 - 読みやすさとスペース効率のバランス */
