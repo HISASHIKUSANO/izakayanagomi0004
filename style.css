@@ -874,14 +874,15 @@ section {
     
     /* hero-content自体のpadding-topは不要なのでリセット */
     .hero-content {
-        padding-top: 0;
+        padding: 1rem; /* モバイル版タイトル表示修正: 全体的なパディング調整 */
         margin-top: 0;
+        max-width: 100%; /* モバイル版タイトル表示修正: 幅制限緩和 */
     }
     
     /* タイポグラフィの改善 - 読みやすさとスペース効率のバランス */
     .hero-title {
-        font-size: 2.2rem; /* 改善: 2.5rem -> 2.2rem */
-        line-height: 1.2; /* 改善: 行間調整 */
+        font-size: 1.6rem; /* モバイル版タイトル表示修正: 2.2rem -> 1.6rem */
+        line-height: 1.1; /* モバイル版タイトル表示修正: 1.2 -> 1.1 */
         margin-bottom: 1rem; /* 改善: 余白調整 */
     }
     
@@ -1011,7 +1012,8 @@ section {
 
 @media (max-width: 480px) {
     .hero-title {
-        font-size: 1.8rem;
+        font-size: 1.4rem; /* モバイル版タイトル表示修正: 1.8rem -> 1.4rem */
+        line-height: 1.1; /* モバイル版タイトル表示修正: 行間追加調整 */
     }
     
     .hero-content {
