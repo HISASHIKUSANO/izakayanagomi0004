@@ -861,12 +861,12 @@ section {
         background-color: #26160e; /* 改善: アクティブ時の色変更 */
     }
     
-    /* ヒーローセクションの表示崩れを根本的に修正する最終版スタイル */
+    /* ヒーローセクションの表示崩れを根本的に修正する最終版スタイル - モバイル可視性改善 */
     .hero {
         min-height: 100vh;
         height: auto;
         display: flex;
-        align-items: center;
+        align-items: flex-start; /* center → flex-start 上詰め配置でより予測可能に */
         justify-content: center;
         /* 親要素のパディングを削除し、中央揃えに専念させる */
         padding-left: 1rem;
@@ -877,7 +877,7 @@ section {
     .hero-content {
         width: 100%; /* 幅を親に合わせる */
         max-width: 500px; /* ただし最大幅は設定 */
-        padding-top: 100px;  /* 固定ヘッダーを避けるための十分な上部余白 */
+        padding-top: 80px;   /* 100px → 80px 固定ヘッダー分のオフセットに調整 */
         padding-bottom: 40px; /* 下部の余白 */
         margin: 0;
     }
