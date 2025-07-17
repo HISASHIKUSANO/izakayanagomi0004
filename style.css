@@ -877,16 +877,20 @@ section {
     .hero-content {
         width: 100%; /* 幅を親に合わせる */
         max-width: 500px; /* ただし最大幅は設定 */
-        padding-top: 80px;   /* 100px → 80px 固定ヘッダー分のオフセットに調整 */
+        padding-top: 60px;   /* 80px → 60px さらに縮小してヘッダー重なりを完全解消 */
         padding-bottom: 40px; /* 下部の余白 */
         margin: 0;
     }
     
     /* タイポグラフィの改善 - 読みやすさとスペース効率のバランス */
     .hero-title {
-        font-size: 1.6rem; /* モバイル版タイトル表示修正: 2.2rem -> 1.6rem */
+        font-size: 1.8rem; /* モバイル版タイトル表示修正: 1.6rem -> 1.8rem 視認性向上 */
         line-height: 1.1; /* モバイル版タイトル表示修正: 1.2 -> 1.1 */
         margin-bottom: 1rem; /* 改善: 余白調整 */
+        z-index: 10; /* 確実に前面表示 */
+        text-shadow: 3px 3px 8px rgba(0,0,0,0.9); /* 強化されたテキストシャドウで視認性向上 */
+        color: #ffe6bd; /* 明確な色指定 */
+        position: relative; /* z-index有効化 */
     }
     
     .hero-subtitle {
@@ -1015,8 +1019,12 @@ section {
 
 @media (max-width: 480px) {
     .hero-title {
-        font-size: 1.4rem; /* モバイル版タイトル表示修正: 1.8rem -> 1.4rem */
+        font-size: 1.6rem; /* モバイル版タイトル表示修正: 1.4rem -> 1.6rem 視認性向上 */
         line-height: 1.1; /* モバイル版タイトル表示修正: 行間追加調整 */
+        z-index: 10; /* 確実に前面表示 */
+        text-shadow: 3px 3px 8px rgba(0,0,0,0.9); /* 強化されたテキストシャドウで視認性向上 */
+        color: #ffe6bd; /* 明確な色指定 */
+        position: relative; /* z-index有効化 */
     }
     
     .hero-content {
