@@ -873,11 +873,11 @@ section {
         padding-right: 1rem;
     }
     
-    /* コンテンツ自身に上下の余白を持たせて、ヘッダーとの重なりを確実に回避 */
+    /* ヒーローセクションのモバイル表示崩れを修正 */
     .hero-content {
         width: 100%; /* 幅を親に合わせる */
         max-width: 500px; /* ただし最大幅は設定 */
-        padding-top: 60px;   /* 80px → 60px さらに縮小してヘッダー重なりを完全解消 */
+        padding-top: 5rem; /* 上部に余白を追加してタイトルを押し下げる */
         padding-bottom: 40px; /* 下部の余白 */
         margin: 0;
     }
