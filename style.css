@@ -866,7 +866,7 @@ section {
         min-height: 100vh;
         height: auto;
         display: flex;
-        align-items: flex-start; /* center → flex-start 上詰め配置でより予測可能に */
+        align-items: center; /* ★★★ flex-start → center ヒーローコンテンツを中央配置に戻して固定ヘッダーとの重なりを回避 ★★★ */
         justify-content: center;
         /* 親要素のパディングを削除し、中央揃えに専念させる */
         padding-left: 1rem;
@@ -877,7 +877,7 @@ section {
     .hero-content {
         width: 100%; /* 幅を親に合わせる */
         max-width: 500px; /* ただし最大幅は設定 */
-        padding-top: 120px; /* ★★★★★ 固定ヘッダーを確実に避けるため、上部余白を十分に増やす ★★★★★ */
+        padding-top: 180px; /* ★★★★★ ヘッダー+ハンバーガーボタンを確実に避けるため大幅に増加 (120px→180px) ★★★★★ */
         padding-bottom: 40px; /* 下部の余白 */
         margin: 0;
     }
@@ -1028,7 +1028,10 @@ section {
     }
     
     .hero-content {
-        padding: 1rem;
+        padding-top: 180px; /* ★★★ 最重要修正：CSS優先度問題を解決 - padding: 1remが180pxを上書きするのを防ぐ ★★★ */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 1rem;
     }
     
     .about-item {
