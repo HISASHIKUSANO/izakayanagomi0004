@@ -877,7 +877,7 @@ section {
     .hero-content {
         width: 100%; /* 幅を親に合わせる */
         max-width: 500px; /* ただし最大幅は設定 */
-        padding-top: 5rem; /* 上部に余白を追加してタイトルを押し下げる */
+        padding-top: 120px; /* ★★★★★ 固定ヘッダーを確実に避けるため、上部余白を十分に増やす ★★★★★ */
         padding-bottom: 40px; /* 下部の余白 */
         margin: 0;
     }
